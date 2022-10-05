@@ -3,6 +3,8 @@
 
 A simple package for getting random posts, images, or subreddits via the reddit api.
 
+All thats changed in this fork is that I made it use new reddit instead of old reddit
+
 
 ## Installation
 
