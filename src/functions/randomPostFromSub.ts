@@ -23,34 +23,36 @@ export async function randomPostFromSub(data: data): Promise<POST> {
         // Convert the expression to unknown the return as null
         return null as unknown as POST;
     }
+    else {
+        const posts = responseJSON.data.children.map(child => child.data) as Array<any>;
+        const post = posts[Math.floor(Math.random() * posts.length)];
 
-    const posts = responseJSON.data.children.map(child => child.data) as Array<any>;
-    const post = posts[Math.floor(Math.random() * posts.length)];
+        if (post === null) {
+            throw new Error("No post found");
+        }
+        ;
 
-    if (post === null) {
-        throw new Error("No post found");
-    };
+        let link = `https://reddit.com/${post.permalink}`;
+        // Replace all 'r//' with 'r/' to fix broken links
+        link = link.replace(/r\/\//g, "r/");
+        // Replace all '//r/' with '/r/' to fix broken links
+        link = link.replace(/\/\/r\//g, "/r/");
 
-    let link = `https://reddit.com/${post.permalink}`;
-    // Replace all 'r//' with 'r/' to fix broken links
-    link = link.replace(/r\/\//g, "r/");
-    // Replace all '//r/' with '/r/' to fix broken links
-    link = link.replace(/\/\/r\//g, "/r/");
-
-    return {
-        image: post.url.replace("gifv", "gif"),
-        title: post.title,
-        content: post.selftext,
-        upvotes: post.ups,
-        downvotes: post.downs,
-        upvoteRatio: post.upvote_ratio,
-        nsfw: post.over_18,
-        author: post.author,
-        category: post.category,
-        thumbnail: post.thumbnail,
-        url: link,
-        html: post.selftext_html,
-        createdUTC: post.created_utc,
-        raw: post,
-    } as POST;
+        return {
+            image: post.url.replace("gifv", "gif"),
+            title: post.title,
+            content: post.selftext,
+            upvotes: post.ups,
+            downvotes: post.downs,
+            upvoteRatio: post.upvote_ratio,
+            nsfw: post.over_18,
+            author: post.author,
+            category: post.category,
+            thumbnail: post.thumbnail,
+            url: link,
+            html: post.selftext_html,
+            createdUTC: post.created_utc,
+            raw: post,
+        } as POST;
+    }
 }
