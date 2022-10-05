@@ -18,16 +18,8 @@ export async function randomPostFromSub(data: data): Promise<POST> {
     const response = await fetch(`https://reddit.com/r/${reddit}/${sortType}.json?limit=${postGetLimit}`);
     const responseJSON = await response.json() as RESPONSE;
 
-    if (responseJSON.error) {
-        throw new Error(`Error: ${responseJSON.error}`);
-    }
-
     const posts = responseJSON.data.children.map(child => child.data) as Array<any>;
     const post = posts[Math.floor(Math.random() * posts.length)];
-
-    if (post === null || post === undefined) {
-        throw new Error("No post found");
-    };
 
     return {
         image: post.url.replace("gifv", "gif"),
