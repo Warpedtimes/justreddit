@@ -18,6 +18,10 @@ export async function randomPostFromSub(data: data): Promise<POST> {
     const response = await fetch(`https://reddit.com/r/${reddit}/${sortType}.json?limit=${postGetLimit}`);
     const responseJSON = await response.json() as RESPONSE;
 
+    if (responseJSON.error) {
+        return response as unknown as POST
+    }
+
     const posts = responseJSON.data.children.map(child => child.data) as Array<any>;
     const post = posts[Math.floor(Math.random() * posts.length)];
 
