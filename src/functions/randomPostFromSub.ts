@@ -19,7 +19,7 @@ export async function randomPostFromSub(data: data): Promise<POST> {
     const responseJSON = await response.json() as RESPONSE;
 
     if (responseJSON.error) {
-        throw new Error('Error: ' + responseJSON.error);
+        throw new Error(`Error: ${responseJSON.error}`);
     }
 
     const posts = responseJSON.data.children.map(child => child.data) as Array<any>;
