@@ -29,6 +29,10 @@ export async function randomPostFromSub(data: data): Promise<POST> {
         throw new Error("No post found");
     };
 
+    let link = `https://reddit.com/${post.permalink}`;
+    // Replace all 'r//' with 'r/' to fix broken links
+    link = link.replace(/r\/\//g, "r/");
+
     return {
         image: post.url.replace("gifv", "gif"),
         title: post.title,
@@ -40,8 +44,7 @@ export async function randomPostFromSub(data: data): Promise<POST> {
         author: post.author,
         category: post.category,
         thumbnail: post.thumbnail,
-        // Replace all / in post.permalink with '' (nothing)
-        url: `https://reddit.com${post.permalink.replace(/\//g, "")}`,
+        url: link,
         html: post.selftext_html,
         createdUTC: post.created_utc,
         raw: post,
