@@ -20,7 +20,8 @@ export async function randomPostFromSub(data: data): Promise<POST> {
 
     // Return null if if the response has an error
     if (responseJSON.error) {
-        return <Promise<POST>>null;
+        // Convert the expression to unknown the return as null
+        return null as unknown as POST;
     }
 
     const posts = responseJSON.data.children.map(child => child.data) as Array<any>;
