@@ -15,7 +15,7 @@ export async function randomPostFromSub(data: data): Promise<POST> {
         throw new Error(`Invalid sort type: ${sortType}`);
     }
 
-    const response = await fetch(`https://www.reddit.com/r/${reddit}/${sortType}.json?limit=${postGetLimit}`);
+    const response = await fetch(`https:/reddit.com/r/${reddit}/${sortType}.json?limit=${postGetLimit}`);
     const responseJSON = await response.json() as RESPONSE;
     
     if (responseJSON.error) {
@@ -40,7 +40,7 @@ export async function randomPostFromSub(data: data): Promise<POST> {
         author: post.author,
         category: post.category,
         thumbnail: post.thumbnail,
-        url: post.permalink ? `https://www.reddit.com/${post.permalink}` : null,
+        url: post.permalink ? `https:/reddit.com/${post.permalink}` : null,
         html: post.selftext_html,
         createdUTC: post.created_utc,
         raw: post,
