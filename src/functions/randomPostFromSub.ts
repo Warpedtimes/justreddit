@@ -21,6 +21,11 @@ export async function randomPostFromSub(data: data): Promise<POST> {
     const posts = responseJSON.data.children.map(child => child.data) as Array<any>;
     const post = posts[Math.floor(Math.random() * posts.length)];
 
+    // Check for errors
+    if (post === undefined || post === null) {
+        return post as unknown as POST;
+    }
+
     return {
         image: post.url.replace("gifv", "gif"),
         title: post.title,
