@@ -21,38 +21,36 @@ export async function randomPostFromSub(data: data): Promise<POST> {
     // Return null if if the response has an error
     if (responseJSON.error) {
         // Convert the expression to unknown the return as null
-        return null as unknown as POST;
+        throw new Error('Error: ' + responseJSON.error);
     }
-    else {
-        const posts = responseJSON.data.children.map(child => child.data) as Array<any>;
-        const post = posts[Math.floor(Math.random() * posts.length)];
 
-        if (post === null) {
-            throw new Error("No post found");
-        }
-        ;
+    const posts = responseJSON.data.children.map(child => child.data) as Array<any>;
+    const post = posts[Math.floor(Math.random() * posts.length)];
 
-        let link = `https://reddit.com/${post.permalink}`;
-        // Replace all 'r//' with 'r/' to fix broken links
-        link = link.replace(/r\/\//g, "r/");
-        // Replace all '//r/' with '/r/' to fix broken links
-        link = link.replace(/\/\/r\//g, "/r/");
+    if (post === null) {
+        throw new Error("No post found");
+    };
 
-        return {
-            image: post.url.replace("gifv", "gif"),
-            title: post.title,
-            content: post.selftext,
-            upvotes: post.ups,
-            downvotes: post.downs,
-            upvoteRatio: post.upvote_ratio,
-            nsfw: post.over_18,
-            author: post.author,
-            category: post.category,
-            thumbnail: post.thumbnail,
-            url: link,
-            html: post.selftext_html,
-            createdUTC: post.created_utc,
-            raw: post,
-        } as POST;
-    }
+    let link = `https://reddit.com/${post.permalink}`;
+    // Replace all 'r//' with 'r/' to fix broken links
+    link = link.replace(/r\/\//g, "r/");
+    // Replace all '//r/' with '/r/' to fix broken links
+    link = link.replace(/\/\/r\//g, "/r/");
+
+    return {
+        image: post.url.replace("gifv", "gif"),
+        title: post.title,
+        content: post.selftext,
+        upvotes: post.ups,
+        downvotes: post.downs,
+        upvoteRatio: post.upvote_ratio,
+        nsfw: post.over_18,
+        author: post.author,
+        category: post.category,
+        thumbnail: post.thumbnail,
+        url: link,
+        html: post.selftext_html,
+        createdUTC: post.created_utc,
+        raw: post,
+    } as POST;
 }
